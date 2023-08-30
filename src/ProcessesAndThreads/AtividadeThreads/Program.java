@@ -2,11 +2,11 @@ package ProcessesAndThreads.AtividadeThreads;
 
 public class Program {
     public static void main(String[] args) {
-        final int maxCapacity = 10_000;
+        final int maxCapacity = 100_000;
 
         Warehouse warehouse = new Warehouse(maxCapacity);
-        SoyProducer prod1 = new SoyProducer(111, 10, 100, warehouse);
-        SoyProducer prod2 = new SoyProducer(222, 20, 50, warehouse);
+        SoyProducer prod1 = new SoyProducer(111, 10, 13, warehouse);
+        SoyProducer prod2 = new SoyProducer(222, 21, 10, warehouse);
 
         Thread threadProd1 = new Thread(prod1);
         Thread threadProd2 = new Thread(prod2);

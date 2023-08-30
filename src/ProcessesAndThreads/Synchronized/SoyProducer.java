@@ -23,7 +23,9 @@ public class SoyProducer implements Runnable {
         try {
             while(true) {
                 for (int i = 0; i < 10; i++) {
-                    warehouse.storeInWarehouse(bagsPerCycle);
+                    synchronized (warehouse) {
+                        warehouse.storeInWarehouse(bagsPerCycle);
+                    }
                     bagsProduced += bagsPerCycle;
                 }
                 System.out.println("Producer code: " + code + " | Bags Produced: " + bagsProduced);
