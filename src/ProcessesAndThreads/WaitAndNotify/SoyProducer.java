@@ -1,4 +1,4 @@
-package ProcessesAndThreads.Synchronized;
+package ProcessesAndThreads.WaitAndNotify;
 
 public class SoyProducer implements Runnable {
     private final int code;
@@ -20,22 +20,25 @@ public class SoyProducer implements Runnable {
     }
 
     public void run() {
-            try {
-                while (true) {
+        synchronized (warehouse) {
+            while (true) {
+                try {
                     for (int i = 0; i < 10; i++) {
-                        synchronized (warehouse) {
-                            warehouse.storeInWarehouse(bagsPerCycle);
+                        if (!warehouse.canAddBags(bagsPerCycle)) {
+                            warehouse.wait();
                         }
+                        warehouse.storeInWarehouse(bagsPerCycle);
                         bagsProduced += bagsPerCycle;
+                        warehouse.notifyAll();
                     }
                     System.out.println("Producer code: " + code + " | Bags Produced: " + bagsProduced);
                     System.out.println("Warehouse stock: " + warehouse.getStock());
                     Thread.sleep(delay);
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                    return;
                 }
             }
-            catch (Exception ex) {
-                System.out.println(ex.getMessage());
-                return;
-            }
+        }
     }
 }
